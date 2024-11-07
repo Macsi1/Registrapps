@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Escanear QR</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card class="ion-text-center">
+    <img src="assets/images/scan-qr.webp" alt="QR" style="margin: auto; display: block;">
+    <h6 class="scan-label ion-text-center">Escanea el QR</h6>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-button (click)="startScan()" class="submit" expand="block" color="primary">
+          Escanear
+          <ion-icon slot="end" name="scan-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button (click)="readBarcodeFromImage()" class="submit" expand="block" color="primary">
+          Seleccionar
+          <ion-icon slot="end" name="image-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-item class="result" *ngIf="scanResult" lines="none">
+      <ion-label>Resultado</ion-label>
+      <ion-text>{{scanResult}}</ion-text>
+      <ion-label>
+        <ion-buttons slot="end">
+
+          <ion-button ngif="isUrl" (click)="openCapacitorSite()">
+            <ion-icon slot="icon-only" name="globe-outline"></ion-icon>
+          </ion-button>
+
+          <ion-button (click)="writeToClipboard()">
+            <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-label>
+    </ion-item>
+    
+  </ion-card>
+</ion-content>

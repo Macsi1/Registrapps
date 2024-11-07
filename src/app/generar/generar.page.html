@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Generar QR</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Generador de Código QR</ion-card-title>
+    </ion-card-header>
+    <div id="qrImage">
+      <div class="d-flex-center">
+        <div class="d-flex-center qr-wrapper">
+          <qr-code *ngIf="qrText" [value]="qrText" size="190" errorCorrectionLevel="M" />
+          <img *ngIf="!qrText" class="qr-placeholder" src="assets/images/qr.webp" alt="QR code">
+        </div>
+      </div>
+    </div>
+    <ion-textarea
+      class="ion-text-center ion-padding"
+      label="Texto para el QR"
+      labelPlacement="stacked"
+      fill="outline"
+      [(ngModel)]="qrText"
+      rows="5"
+      autoGrow="true"
+    >
+    </ion-textarea>
+    <ion-button (click)="captureScreen()" *ngIf="qrText" class="submit ion-margin-top" expand="block">
+      Compartir
+      <ion-icon slot="end" name="share-social-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+</ion-content>

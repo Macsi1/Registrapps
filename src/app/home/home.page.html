@@ -1,0 +1,63 @@
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item routerLink="/generar">
+          <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+          <ion-label>Generar QR</ion-label>
+        </ion-item>
+
+        <ion-item routerLink="/escanear">
+          <ion-icon name="scan-outline" slot="start"></ion-icon>
+          <ion-label>Escanear QR</ion-label>
+        </ion-item>
+
+        <ion-item routerLink="/tres">
+          <ion-icon name="log-out" slot="start"></ion-icon>
+          <ion-label>Cerrar Sesión</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title class="centered">Bienvenido a RegistrAPP</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <!-- Imagen centrada -->
+          <img class="centered-img" 
+               src="https://t3.ftcdn.net/jpg/03/68/95/08/360_F_368950850_aMW6C9P5SV7udFGHWgz97fvgNVsnOvpp.jpg"
+               alt="Educación en Continuidad" />
+          <br>
+          <img src="https://www.duoc.cl/wp-content/uploads/2020/06/valparaiso_IMG_0313_1920.jpg" 
+               alt="Foto sede" />
+
+          <!-- Contenedor de la galería de imágenes -->
+          <div class="image-gallery">
+            <div class="image-container" *ngFor="let image of images">
+              <img [src]="image.url" 
+                   [alt]="image.alt" 
+                   class="gallery-img"
+                   (click)="navigateToPage(image.alt)"
+                   style="cursor: pointer">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </div>

@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ingles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Estadísticas -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumen de Asistencia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="stat-box">
+              <h2>{{getEstadisticas().porcentaje}}%</h2>
+              <p>Asistencia Total</p>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="stat-box">
+              <h2>{{getEstadisticas().asistidos}}</h2>
+              <p>Días Asistidos</p>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="stat-box">
+              <h2>{{getEstadisticas().faltas}}</h2>
+              <p>Faltas</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Calendario -->
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="mesAnterior()">
+            <ion-icon name="chevron-back"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="8" class="ion-text-center">
+          <h2>{{getNombreMes() | titlecase}} {{mesActual.getFullYear()}}</h2>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="mesSiguiente()">
+            <ion-icon name="chevron-forward"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <!-- Días de la semana -->
+        <ion-row>
+          <ion-col *ngFor="let dia of diasSemana">{{dia}}</ion-col>
+        </ion-row>
+
+        <!-- Calendario -->
+        <ion-row *ngFor="let semana of calendario">
+          <ion-col *ngFor="let dia of semana">
+            <ion-badge [color]="dia.asistio ? 'success' : 'danger'"
+                      [class.hoy]="dia.esHoy"
+                      *ngIf="dia.fecha.getMonth() === mesActual.getMonth()">
+              {{dia.fecha.getDate()}}
+            </ion-badge>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Leyenda -->
+  <ion-list>
+    <ion-item>
+      <ion-badge color="success" slot="start"></ion-badge>
+      <ion-label>Asistió</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-badge color="danger" slot="start"></ion-badge>
+      <ion-label>Falta</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Volver al Menú</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Menú</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="ion-text-center">
+    <h2 class="ion-padding">Menú de app</h2>
+    
+    <div class="button-container">
+      <ion-button 
+        expand="block" 
+        class="ion-margin" 
+        [routerLink]="['/tres']">
+        Iniciar Sesión
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        class="ion-margin" 
+        [routerLink]="['/dos']">
+        Restablecer Contraseña
+      </ion-button>
+
+      <ion-button 
+        *ngIf="isMobile" 
+        expand="block" 
+        class="ion-margin" 
+        (click)="downloadAPK()">
+        Descargar APK
+      </ion-button>
+    </div>
