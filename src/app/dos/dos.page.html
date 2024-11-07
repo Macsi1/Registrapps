@@ -9,21 +9,52 @@
           <ion-card-content>
             <ion-item>
               <ion-input type="email" placeholder="Ingrese correo" label="Correo" labelPlacement="floating"
-                  helperText="Solo se permite el correo invitado@gmail.com"
+                  helperText="Ingrese su correo valido"
                   errorText="Correo no autorizado"
                   [(ngModel)]="email"
                   (ionInput)="validarCorreo($event)">
               </ion-input>
             </ion-item>
-            <ion-button expand="full" [disabled]="!correoValido" (click)="enviarEnlace()">
-              Enviar Enlace
+            <ion-item>
+              <ion-label position="floating">Contraseña Actual</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="claveAntigua"
+                (ionChange)="validarClaveAntigua()">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Nueva Contraseña</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="claveNueva"
+                (ionChange)="validarClaves()">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Confirmar Nueva Contraseña</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="confirmarClave"
+                (ionChange)="validarClaves()"
+                [errorText]="!clavesCoinciden && confirmarClave ? 'Las contraseñas no coinciden' : ''"
+                class="ion-invalid" [class.ion-valid]="clavesCoinciden">
+              </ion-input>
+            </ion-item>
+
+            <ion-button 
+              expand="block"
+              [disabled]="!claveAntiguaValida || !clavesCoinciden"
+              (click)="cambiarContrasena()">
+              Cambiar Contraseña
             </ion-button>
+
             <ion-toast
               [isOpen]="mostrarToast"
-              message="Se ha enviado el enlace de recuperación a tu correo"
-              [duration]="3000"
-              color="success"
-              position="top"
+              message="Contraseña actualizada exitosamente"
+              duration="2000"
               (didDismiss)="mostrarToast = false">
             </ion-toast>
           </ion-card-content>

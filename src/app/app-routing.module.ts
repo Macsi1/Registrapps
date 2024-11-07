@@ -1,22 +1,18 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
 
 const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [AuthGuard]
-  },
   {
     path: '',
     redirectTo: 'tres',
     pathMatch: 'full'
   },
- 
   {
-    path: 'menu',
-    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'tres',
@@ -49,12 +45,16 @@ const routes: Routes = [
   {
     path: 'generar',
     loadChildren: () => import('./generar/generar.module').then( m => m.GenerarPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [RoleGuard]
   },
   {
     path: 'escanear',
     loadChildren: () => import('./escanear/escanear.module').then( m => m.EscanearPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'dos',
+    loadChildren: () => import('./dos/dos.module').then(m => m.DosPageModule)
   }
   
 
