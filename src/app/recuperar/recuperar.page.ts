@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-dos',
-  templateUrl: './dos.page.html',
-  styleUrls: ['./dos.page.scss'],
+  selector: 'app-recuperar',
+  templateUrl: './recuperar.page.html',
+  styleUrls: ['./recuperar.page.scss'],
 })
-export class DosPage implements OnInit {
+export class RecuperarPage implements OnInit {
   email: string = '';
   claveAntigua: string = '';
   claveNueva: string = '';

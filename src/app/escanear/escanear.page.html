@@ -20,29 +20,27 @@
         </ion-button>
       </ion-col>
       <ion-col size="6">
-        <ion-button (click)="readBarcodeFromImage()" class="submit" expand="block" color="primary">
+        <ion-button (click)="fileInput.click()" class="submit" expand="block" color="primary">
           Seleccionar
           <ion-icon slot="end" name="image-outline"></ion-icon>
         </ion-button>
+        <input #fileInput type="file" 
+               accept="image/*" 
+               (change)="readBarcodeFromImage($event)"
+               style="display: none">
       </ion-col>
     </ion-row>
 
-    <ion-item class="result" *ngIf="scanResult" lines="none">
-      <ion-label>Resultado</ion-label>
-      <ion-text>{{scanResult}}</ion-text>
-      <ion-label>
-        <ion-buttons slot="end">
-
-          <ion-button ngif="isUrl" (click)="openCapacitorSite()">
-            <ion-icon slot="icon-only" name="globe-outline"></ion-icon>
-          </ion-button>
-
-          <ion-button (click)="writeToClipboard()">
-            <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-label>
+    <ion-item>
+      <ion-label position="stacked">Código de Asignatura</ion-label>
+      <ion-input [(ngModel)]="scanResult" placeholder="Ej: MAT101"></ion-input>
     </ion-item>
-    
+
+    <ion-button expand="block" (click)="registrarAsistencia()" 
+                [disabled]="!scanResult"
+                class="ion-margin-top">
+      Registrar Asistencia
+      <ion-icon slot="end" name="checkmark-circle-outline"></ion-icon>
+    </ion-button>
   </ion-card>
 </ion-content>

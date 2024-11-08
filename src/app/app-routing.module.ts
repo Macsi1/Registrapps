@@ -6,7 +6,7 @@ import { RoleGuard } from './guards/role.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'tres',
+    redirectTo: 'inicio',
     pathMatch: 'full'
   },
   {
@@ -15,28 +15,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'tres',
-    loadChildren: () => import('./tres/tres.module').then( m => m.TresPageModule)
-  },
-  {
-    path: 'mate',
-    loadChildren: () => import('./mate/mate.module').then( m => m.MatePageModule)
-  },
-  {
-    path: 'lengua',
-    loadChildren: () => import('./lengua/lengua.module').then( m => m.LenguaPageModule)
-  },
-  {
-    path: 'historia',
-    loadChildren: () => import('./historia/historia.module').then( m => m.HistoriaPageModule)
-  },
-  {
-    path: 'ciencia',
-    loadChildren: () => import('./ciencia/ciencia.module').then( m => m.CienciaPageModule)
-  },
-  {
-    path: 'ingles',
-    loadChildren: () => import('./ingles/ingles.module').then( m => m.InglesPageModule)
+    path: 'inicio',
+    loadChildren: () => import('./inicio/inicio.module').then( m => m.InicioPageModule)
   },
   {
     path: 'asistencia',
@@ -53,8 +33,13 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'dos',
-    loadChildren: () => import('./dos/dos.module').then(m => m.DosPageModule)
+    path: 'asignatura-detalle/:codigo',
+    loadChildren: () => import('./asignatura-detalle/asignatura-detalle.module')
+      .then(m => m.AsignaturaDetallePageModule)
+  },
+  {
+    path: 'recuperar',
+    loadChildren: () => import('./recuperar/recuperar.module').then(m => m.RecuperarPageModule)
   }
   
 

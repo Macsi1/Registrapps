@@ -20,13 +20,12 @@
             <ion-icon name="calendar-outline" slot="start"></ion-icon>
             <ion-label>Ver Asistencia</ion-label>
           </ion-item>
+          
+          <ion-item routerLink="/escanear">
+            <ion-icon name="scan-outline" slot="start"></ion-icon>
+            <ion-label>Escanear QR</ion-label>
+          </ion-item>
         </ng-container>
-
-        <!-- Opciones comunes -->
-        <ion-item routerLink="/escanear">
-          <ion-icon name="scan-outline" slot="start"></ion-icon>
-          <ion-label>Escanear QR</ion-label>
-        </ion-item>
 
         <ion-item routerLink="/dos">
           <ion-icon name="log-out" slot="start"></ion-icon>
@@ -54,7 +53,7 @@
     <ion-content>
       <ion-card>
         <ion-card-header>
-          <ion-card-title class="centered">Bienvenido a RegistrAPP</ion-card-title>
+          <ion-card-title class="centered">Bienvenido a RegistrAPP {{nombreUsuario}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <!-- Imagen centrada -->

@@ -5,12 +5,12 @@ import { StorageService } from '../services/storage.service';
 import { DataService } from '../services/data.service';
 
 @Component({
-  selector: 'app-tres',
-  templateUrl: './tres.page.html',
-  styleUrls: ['./tres.page.scss'],
+  selector: 'app-inicio',
+  templateUrl: './inicio.page.html',
+  styleUrls: ['./inicio.page.scss'],
 })
 
-export class TresPage implements OnInit {
+export class InicioPage implements OnInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';

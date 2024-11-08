@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, Platform, ToastController, AlertController } from '@ionic/angular';
 import { BarcodeScanningModalComponent } from './barcode-scanning-modal.component';
-import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import jsQR from 'jsqr';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Clipboard } from '@capacitor/clipboard';
 import { Browser } from '@capacitor/browser';
+import { AsistenciaService } from '../services/asistencia.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-escanear',
@@ -14,21 +17,22 @@ import { Browser } from '@capacitor/browser';
 export class EscanearPage implements OnInit{
   // yorch-dev.com
   scanResult = '';
+  codigoAsignatura = '';
   constructor(
     private loadingController: LoadingController,
     private platform: Platform,
     private modalController: ModalController,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private asistenciaService: AsistenciaService,
+    private router: Router
   ){}
   ngOnInit(): void {
-    if(this.platform.is('capacitor'))
-    {
-      BarcodeScanner.isSupported().then();
-      BarcodeScanner.checkPermissions().then(); 
-      BarcodeScanner.removeAllListeners().then();
-      }
+    if(this.platform.is('capacitor')) {
+      // Solo necesitamos verificar el permiso
+      BarcodeScanner.checkPermission().then();
     }
+  }
   
 
   async startScan(){
@@ -47,15 +51,35 @@ export class EscanearPage implements OnInit{
       this.scanResult = data?.barcode?.displayValue;
     }
   }
-  async readBarcodeFromImage(){
-    const { files } = await FilePicker.pickFiles({ readData: false });
-    const path = files[0]?.path;
-    if(!path) return;
-    const { barcodes } = await BarcodeScanner.readBarcodesFromImage({
-      path,
-      formats: []
-    })
-    this.scanResult = barcodes[0].displayValue;
+  async readBarcodeFromImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async (e: any) => {
+        const imageData = e.target.result;
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const context = canvas.getContext('2d');
+          context?.drawImage(img, 0, 0);
+          const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
+          
+          if (imageData) {
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+            if (code) {
+              this.scanResult = code.data;
+            } else {
+              // Manejar el caso cuando no se detecta código QR
+              console.log('No se detectó ningún código QR');
+            }
+          }
+        };
+        img.src = imageData;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   writeToClipboard = async () => {
@@ -104,6 +128,61 @@ export class EscanearPage implements OnInit{
   isUrl(){
     let regex = /\.(com|net|io|me|crypto|ai)\b/i;
     return regex.test(this.scanResult);
+  }
+
+  async registrarAsistencia() {
+    if (this.scanResult) {
+      const loading = await this.loadingController.create({
+        message: 'Verificando código...',
+      });
+      await loading.present();
+
+      try {
+        // Verificar si el código escaneado corresponde a una asignatura inscrita
+        const asignatura = this.asistenciaService.obtenerAsignaturaPorCodigo(this.scanResult);
+        
+        if (!asignatura) {
+          const toast = await this.toastController.create({
+            message: 'Código QR inválido. No corresponde a ninguna asignatura inscrita.',
+            duration: 3000,
+            position: 'bottom',
+            color: 'danger'
+          });
+          await loading.dismiss();
+          toast.present();
+          return;
+        }
+
+        const registroExitoso = this.asistenciaService.registrarAsistencia(this.scanResult);
+        
+        const mensaje = registroExitoso 
+          ? 'Asistencia registrada correctamente para ' + asignatura.nombre
+          : 'Ya existe un registro de asistencia para hoy en ' + asignatura.nombre;
+
+        const toast = await this.toastController.create({
+          message: mensaje,
+          duration: 2000,
+          position: 'bottom',
+          color: registroExitoso ? 'success' : 'warning'
+        });
+        
+        await loading.dismiss();
+        toast.present();
+        
+        if (registroExitoso) {
+          this.router.navigate(['/asistencia']);
+        }
+      } catch (error) {
+        await loading.dismiss();
+        const toast = await this.toastController.create({
+          message: 'Error al registrar la asistencia',
+          duration: 2000,
+          position: 'bottom',
+          color: 'danger'
+        });
+        toast.present();
+      }
+    }
   }
 }
     
