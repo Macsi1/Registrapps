@@ -67,6 +67,8 @@ export class RecuperarPage implements OnInit {
       
       this.dataService.actualizarUsuario(usuarioActualizado).subscribe(
         async () => {
+          this.cargarUsuarios();
+          
           this.mostrarToast = true;
           setTimeout(() => {
             this.mostrarToast = false;

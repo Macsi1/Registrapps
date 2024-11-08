@@ -7,21 +7,32 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataService {
-  private usuarios: any[] = [];
+  private readonly USERS_KEY = 'usuarios';
 
-  constructor(private http: HttpClient) { }
-
-  getUsuarios(): Observable<any> {
-    return this.http.get('assets/data.json');
+  constructor(private http: HttpClient) {
+    // Inicializar localStorage con datos del JSON si está vacío
+    if (!localStorage.getItem(this.USERS_KEY)) {
+      this.getUsuarios().subscribe(data => {
+        localStorage.setItem(this.USERS_KEY, JSON.stringify(data.usuarios));
+      });
+    }
   }
 
-  actualizarUsuario(usuarioActualizado: any): Observable<any> {
-    // Actualiza el usuario en la memoria local
-    this.usuarios = this.usuarios.map(usuario => 
-      usuario.correo === usuarioActualizado.correo ? usuarioActualizado : usuario
-    );
-    
-    // Simula una respuesta exitosa
-    return of({ success: true, usuario: usuarioActualizado });
+  getUsuarios() {
+    const usuariosStorage = localStorage.getItem(this.USERS_KEY);
+    if (usuariosStorage) {
+      return of({ usuarios: JSON.parse(usuariosStorage) });
+    }
+    return this.http.get<any>('assets/data.json');
+  }
+
+  actualizarUsuario(usuario: any) {
+    const usuarios = JSON.parse(localStorage.getItem(this.USERS_KEY) || '[]');
+    const index = usuarios.findIndex((u: any) => u.id === usuario.id);
+    if (index !== -1) {
+      usuarios[index] = usuario;
+      localStorage.setItem(this.USERS_KEY, JSON.stringify(usuarios));
+    }
+    return of(usuario);
   }
 } 
