@@ -1,0 +1,22 @@
+:root {
+    --ion-color-primary: #ff5100; // Color Primario
+    --ion-color-secondary: #444444; // Color Secundario
+    --ion-color-tertiary: #000000; // Color Terciario
+  }
+
+  body.barcode-scanner-modal{
+    visibility: hidden;
+    --background: transparent;
+    --background-color: transparent;
+  }
+  .barcode-scanner-modal{
+    visibility: visible;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .barcode-scanner-modal{
+      visibility: hidden;
+      --background: transparent;
+      --background-color: transparent;
+    }
+  }

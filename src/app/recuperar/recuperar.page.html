@@ -1,0 +1,77 @@
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Restablecer Contraseña</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-input type="email" placeholder="Ingrese correo" label="Correo" labelPlacement="floating"
+                  helperText="Ingrese su correo valido"
+                  errorText="Correo no autorizado"
+                  [(ngModel)]="email"
+                  (ionInput)="validarCorreo($event)">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Contraseña Actual</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="claveAntigua"
+                (ionChange)="validarClaveAntigua()">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Nueva Contraseña</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="claveNueva"
+                (ionChange)="validarClaves()">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Confirmar Nueva Contraseña</ion-label>
+              <ion-input 
+                type="password" 
+                [(ngModel)]="confirmarClave"
+                (ionChange)="validarClaves()"
+                [errorText]="!clavesCoinciden && confirmarClave ? 'Las contraseñas no coinciden' : ''"
+                class="ion-invalid" [class.ion-valid]="clavesCoinciden">
+              </ion-input>
+            </ion-item>
+
+            <ion-button 
+              expand="block"
+              [disabled]="!claveAntiguaValida || !clavesCoinciden"
+              (click)="cambiarContrasena()">
+              Cambiar Contraseña
+            </ion-button>
+
+            <ion-toast
+              [isOpen]="mostrarToast"
+              message="Contraseña actualizada exitosamente"
+              duration="2000"
+              (didDismiss)="mostrarToast = false">
+            </ion-toast>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Volver al Menú</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>

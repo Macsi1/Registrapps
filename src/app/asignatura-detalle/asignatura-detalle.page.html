@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/asistencia"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ asignatura?.nombre }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Código: {{ asignatura?.codigo }}</ion-card-subtitle>
+      <ion-card-title>Registro de Asistencia</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="2">
+            <ion-button fill="clear" (click)="mesAnterior()">
+              <ion-icon name="chevron-back"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="8" class="ion-text-center">
+            <h2>{{ mesActual | date:'MMMM yyyy':'':'es' }}</h2>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button fill="clear" (click)="mesSiguiente()">
+              <ion-icon name="chevron-forward"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-list>
+        <ion-item *ngFor="let dia of diasDelMes">
+          <ion-label>
+            <h2>{{ formatearFecha(dia.fecha) }}</h2>
+          </ion-label>
+          <ion-icon 
+            slot="end" 
+            [name]="dia.asistio ? 'checkmark-circle' : 'close-circle'"
+            [color]="dia.asistio ? 'success' : 'danger'">
+          </ion-icon>
+        </ion-item>
+      </ion-list>
+
+      <ion-item *ngIf="diasDelMes.length === 0" lines="none">
+        <ion-label class="ion-text-center">
+          No hay días para mostrar en este mes
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumen</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Total de días registrados</ion-label>
+        <ion-badge color="primary" slot="end">
+          {{ diasDelMes.length }}
+        </ion-badge>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total de asistencias</ion-label>
+        <ion-badge color="success" slot="end">
+          {{ getTotalAsistencias() }}
+        </ion-badge>
+      </ion-item>
+      <ion-item>
+        <ion-label>Porcentaje de asistencia</ion-label>
+        <ion-badge color="primary" slot="end">
+          {{ calcularPorcentajeAsistencia() | number:'1.0-0' }}%
+        </ion-badge>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

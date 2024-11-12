@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Iniciar Sesión</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>  
+            <form (ngSubmit)="login()" #loginForm="ngForm">
+              <ion-item>
+                <ion-input type="email" 
+                    [(ngModel)]="email"
+                    name="email"
+                    required
+                    placeholder="Ingrese correo" 
+                    label="Correo" 
+                    labelPlacement="floating"
+                    helperText="Ingrese un correo valido"
+                    errorText="Formato de correo erroneo">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input type="password" 
+                    [(ngModel)]="password"
+                    name="password"
+                    required
+                    placeholder="Ingrese Contraseña" 
+                    label="Contraseña" 
+                    labelPlacement="floating"
+                    helperText="Ingrese su Contraseña"
+                    errorText="Contraseña erronea">
+                </ion-input>
+              </ion-item>
+              <ion-button type="submit" expand="full" [disabled]="!loginForm.valid">Ingresar</ion-button>
+              
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

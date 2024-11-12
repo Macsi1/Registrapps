@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Generar QR de Asistencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Profesor: {{ profesorActual }}</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Seleccione Sección</ion-label>
+          <ion-select (ionChange)="onSeccionChange($event)" placeholder="Seleccione una sección">
+            <ion-select-option *ngFor="let seccion of secciones" [value]="seccion.id">
+              {{ seccion.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="seccionSeleccionada">
+          <ion-label>Seleccione Asignatura</ion-label>
+          <ion-select [(ngModel)]="qrText" placeholder="Seleccione una asignatura">
+            <ion-select-option *ngFor="let asignatura of asignaturas" [value]="asignatura.codigo">
+              {{ asignatura.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <div *ngIf="qrText" class="qr-container" id="qrImage">
+        <qrcode
+          [qrdata]="qrText"
+          [width]="256"
+          [allowEmptyString]="true"
+          colorDark="#000000"
+          colorLight="#ffffff"
+          [cssClass]="'qrcode'"
+          elementType="canvas"
+          level="M"
+        ></qrcode>
+      </div>
+
+      <ion-button *ngIf="qrText" expand="block" (click)="captureScreen()">
+        <ion-icon name="share-outline" slot="start"></ion-icon>
+        Compartir QR
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Volver al Menú</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>
